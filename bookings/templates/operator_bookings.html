@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load tz %}
+
+{% block content %}
+<style>
+    .container {
+        max-width: 1100px;
+        margin: 110px auto;
+        padding: 0 20px;
+    }
+
+    .page-title {
+        font-size: 34px;
+        font-weight: 800;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .booking-card {
+        background: #ffffff;
+        padding: 26px;
+        border-radius: 18px;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .booking-info p {
+        margin: 6px 0;
+        font-size: 15px;
+        color: #1f2937;
+    }
+
+    .booking-info strong {
+        font-weight: 700;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: 8px;
+    }
+
+    .badge-booked {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .badge-completed {
+        background: #e5e7eb;
+        color: #374151;
+    }
+
+    .badge-cancelled {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .empty {
+        text-align: center;
+        color: #9ca3af;
+        margin-top: 40px;
+    }
+</style>
+
+<div class="container">
+    <h1 class="page-title">Station Bookings</h1>
+
+    {% for booking in bookings %}
+        <div class="booking-card">
+            <div class="booking-info">
+                <p>
+                    <strong>User:</strong>
+                    {{ booking.user.username }}
+                </p>
+
+                <p>
+                    <strong>Station:</strong>
+                    {{ booking.slot.charging_point.station.name }}
+                </p>
+
+                <p>
+                    <strong>Charging Point:</strong>
+                    CP-{{ booking.slot.charging_point.point_number }}
+                    ({{ booking.slot.charging_point.power_kw }} kW)
+                </p>
+
+                <p>
+                    <strong>Time:</strong>
+                    {{ booking.slot.start_at|localtime|date:"d M Y, h:i A" }}
+                    –
+                    {{ booking.slot.end_at|localtime|time:"h:i A" }}
+                </p>
+
+                {% if booking.status == "cancelled" %}
+                    <span class="badge badge-cancelled">Cancelled</span>
+                {% elif booking.slot.end_at <= now %}
+                    <span class="badge badge-completed">Completed</span>
+                {% else %}
+                    <span class="badge badge-booked">Booked</span>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <p class="empty">No bookings found for your stations.</p>
+    {% endfor %}
+</div>
+{% endblock %}

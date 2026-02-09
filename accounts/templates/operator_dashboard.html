@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+/* ===== OPERATOR DASHBOARD ===== */
+.op-dashboard {
+    padding: 100px 60px;
+    background: #f5f7fb;
+    min-height: 100vh;
+}
+
+.op-header h1 {
+    font-size: 34px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 35px;
+}
+
+/* ===== STATS ===== */
+.op-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1000px;
+}
+
+.stat-card {
+    background: white;
+    padding: 26px;
+    border-radius: 18px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+}
+
+.stat-card h3 {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-card span {
+    font-size: 36px;
+    font-weight: 800;
+    color: #0f766e;
+}
+</style>
+
+<section class="op-dashboard">
+
+    <div class="op-header">
+        <h1>Operator Dashboard</h1>
+    </div>
+
+    <div class="op-stats">
+        <div class="stat-card">
+            <h3>Total Stations</h3>
+            <span>{{ total_stations }}</span>
+        </div>
+
+        <div class="stat-card">
+            <h3>Charging Points</h3>
+            <span>{{ total_points }}</span>
+        </div>
+
+        <div class="stat-card">
+            <h3>Active Slots</h3>
+            <span>{{ active_slots }}</span>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

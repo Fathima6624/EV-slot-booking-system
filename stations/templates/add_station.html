@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+/* ===== ADD STATION PAGE ===== */
+.add-station-section {
+    padding: 120px 20px;
+    min-height: 100vh;
+    background: #f8fafc;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.add-station-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 520px;
+    padding: 36px;
+    border-radius: 20px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.1);
+}
+
+.add-station-card h1 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #0f172a;
+}
+
+.add-station-card p.subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 26px;
+}
+
+/* ===== FORM ===== */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #334155;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1.5px solid #d1d5db;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    resize: none;
+    min-height: 90px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #0f766e;
+}
+
+/* ===== BUTTONS ===== */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.btn-primary {
+    flex: 1;
+    background: #0f766e;
+    color: white;
+    padding: 12px;
+    border-radius: 14px;
+    border: none;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #115e59;
+}
+
+.btn-secondary {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    border: 1.5px solid #cbd5e1;
+    color: #475569;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background: #f1f5f9;
+}
+</style>
+
+<section class="add-station-section">
+    <div class="add-station-card">
+
+        <h1>Add Charging Station</h1>
+        <p class="subtitle">
+            Create a new EV charging station under your account
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Station Name</label>
+                <input type="text"
+                       name="name"
+                       placeholder="e.g. Perinthalmanna EV Charging Hub"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text"
+                       name="location"
+                       placeholder="e.g. Perinthalmanna"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Address</label>
+                <textarea name="address"
+                          placeholder="Full address (optional)"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">
+                    Save Station
+                </button>
+
+                <a href="{% url 'operator_stations' %}"
+                   class="btn-secondary">
+                    Cancel
+                </a>
+            </div>
+        </form>
+
+    </div>
+</section>
+{% endblock %}

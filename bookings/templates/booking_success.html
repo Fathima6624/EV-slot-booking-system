@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .success-section {
+        padding: 140px 20px;
+        text-align: center;
+        background: #f8fafc;
+        min-height: 100vh;
+    }
+
+    .success-card {
+        max-width: 560px;
+        margin: auto;
+        background: #ffffff;
+        padding: 50px 40px;
+        border-radius: 22px;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.08);
+    }
+
+    /* Professional success icon */
+    .success-icon {
+        width: 56px;
+        height: 56px;
+        margin: 0 auto 20px;
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+    }
+
+    .success-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .success-card h1 {
+        font-size: 32px;
+        font-weight: 800;
+        color: #0f766e;
+        margin-bottom: 12px;
+    }
+
+    .success-card p {
+        font-size: 16px;
+        color: #6b7280;
+        margin-bottom: 26px;
+    }
+
+    .success-details {
+        background: #f9fafb;
+        border-radius: 14px;
+        padding: 18px 20px;
+        margin-bottom: 30px;
+        text-align: left;
+        font-size: 15px;
+        color: #111827;
+    }
+
+    .success-details p {
+        margin: 8px 0;
+    }
+
+    .success-details strong {
+        color: #0f172a;
+    }
+
+    .success-actions a {
+        display: inline-block;
+        padding: 14px 30px;
+        background: linear-gradient(135deg, #0f766e, #14b8a6);
+        color: #ffffff;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.25s ease;
+    }
+
+    .success-actions a:hover {
+        opacity: 0.95;
+        transform: translateY(-1px);
+    }
+</style>
+
+<section class="success-section">
+    <div class="success-card">
+
+        <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M20 6L9 17l-5-5"
+                      stroke="white"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <h1>Booking Confirmed</h1>
+        <p>Your charging slot has been successfully booked.</p>
+
+       <div class="success-details">
+    <p>
+        <strong>Station:</strong>
+        {{ booking.slot.charging_point.station.name }}
+    </p>
+
+    <p>
+        <strong>Charging Point:</strong>
+        {{ booking.slot.charging_point.name }}
+        ({{ booking.slot.charging_point.connector_type|upper }} •
+        {{ booking.slot.charging_point.power_kw }} kW)
+    </p>
+
+    <p>
+        <strong>Time:</strong>
+        {{ booking.slot.start_time }} – {{ booking.slot.end_time }}
+    </p>
+</div>
+
+
+        <div class="success-actions">
+            <a href="{% url 'my_bookings' %}">
+                View My Bookings
+            </a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

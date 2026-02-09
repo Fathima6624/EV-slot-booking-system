@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GoCharge | Smart EV Charging</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'images/ev-car.png' %}">
+
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+     {% block style %}{% endblock %}
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar">
+   
+    <div class="nav-left">
+    <a href="{% url 'home' %}" class="logo">
+    <img src="{% static 'images/emlam.png' %}" alt="EV Charging Logo">
+   
+</a>
+
+</div>
+
+   
+
+    <nav class="nav-right">    
+{% if user.is_authenticated %}
+    {% if user.profile.role == "operator" %}
+        <a href="{% url 'operator_dashboard' %}">Dashboard</a>
+       <a href="{% url 'operator_stations' %}">Stations</a>
+ <a href="{% url 'operator_bookings' %}">Bookings</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'station_list' %}">Stations</a>
+        <a href="{% url 'my_bookings' %}">My Bookings</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    {% endif %}
+{% else %}
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'register' %}">Register</a>
+{% endif %}
+
+ 
+</nav>
+
+
+
+
+</header>
+
+<!-- ============ CONTENT ============ -->
+{% block content %}{% endblock %}
+
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+    <div class="footer-container">
+
+        <!-- Brand -->
+        <div class="footer-brand">
+            <h3>GoCharge</h3>
+            <p>Smart, fast, and reliable EV charging solutions.</p>
+
+            <div class="footer-social">
+                <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/" aria-label="Twitter"   target="_blank"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://www.linkedin.com/"    target="_blank"   aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.facebook.com/" target="_blank"       aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            </div>
+        </div>
+
+        <!-- Links -->
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'station_list' %}">Stations</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'my_bookings' %}">My Bookings</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+
+        <!-- Contact -->
+        <div class="footer-contact">
+            <h4>Contact</h4>
+            <p>Email: support@gocharge.com</p>
+            <p>📍 Kerala, India</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © {{ now|date:"Y" }} GoCharge. All rights reserved.
+    </div>
+</footer>
+
+{% if messages %}
+<div id="toast-container">
+    {% for message in messages %}
+        <div class="toast {{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+
+<script>
+    setTimeout(() => {
+        const toasts = document.querySelectorAll('.toast');
+        toasts.forEach(toast => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(30px)';
+            setTimeout(() => toast.remove(), 300);
+        });
+    }, 3500);
+</script>
+
+</body>
+</html>

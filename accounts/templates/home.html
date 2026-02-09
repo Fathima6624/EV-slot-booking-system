@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if upcoming_booking %}
+<div class="reminder-banner">
+    🔔 Your charging slot at
+    <strong>{{ upcoming_booking.slot.charging_point.station.name }}</strong>
+    starts at
+    <strong>{{ upcoming_booking.slot.start_at|date:"h:i A" }}</strong>
+</div>
+{% endif %}
+
+
+<!-- ================= FLASH MESSAGES ================= -->
+
+
+<!-- ================= HERO SECTION ================= -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>
+            Smart EV Charging<br>
+            <span>Made Simple</span>
+        </h1>
+       
+
+
+        {% if user.is_authenticated %}
+             <p>
+    Welcome back 👋  
+    Find and reserve your next charging slot in seconds.
+</p>
+        {% else %}
+            <p>
+                Find nearby EV charging stations, reserve slots instantly,
+                and power your journey without waiting.
+            </p>
+        {% endif %}
+
+        <div class="hero-buttons">
+            {% if user.is_authenticated %}
+                <a href="{% url 'station_list' %}" class="btn-primary">
+                    Find Stations
+                </a>
+                <a href="{% url 'my_bookings' %}" class="btn-outline">
+                    My Bookings
+                </a>
+            {% else %}
+                <a href="{% url 'station_list' %}" class="btn-primary">
+                    Find Stations
+                </a>
+                <a href="{% url 'register' %}" class="btn-outline">
+                    Get Started
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="hero-image">
+        <img src="{% static 'images/car.png' %}" alt="EV Car">
+    </div>
+</section>
+
+<!-- ================= WHY CHOOSE ================= -->
+<section class="why-section">
+    <div class="why-container">
+        <h2 class="why-title">Why Choose EVPLUG?</h2>
+        <p class="why-subtitle">
+            Designed for speed, reliability, and a seamless charging experience.
+        </p>
+
+        <div class="why-grid">
+            <div class="why-card">
+                <div class="why-icon">⚡</div>
+                <h3>Fast Charging</h3>
+                <p>Optimized charging stations for quick and efficient energy delivery.</p>
+            </div>
+
+            <div class="why-card">
+                <div class="why-icon">📍</div>
+                <h3>Smart Locations</h3>
+                <p>Find nearby charging stations with real-time availability.</p>
+            </div>
+
+            <div class="why-card">
+                <div class="why-icon">🔒</div>
+                <h3>Secure Booking</h3>
+                <p>Safe, reliable, and hassle-free slot reservations.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="how-it-works">
+    <div class="how-container">
+        <h2 class="how-title">How It Works</h2>
+        <p class="how-subtitle">
+            Simple steps to start charging your electric vehicle effortlessly.
+        </p>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <span class="step-number">1</span>
+                <h3>Choose Station</h3>
+                <p>Select a nearby charging station based on availability and location.</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-number">2</span>
+                <h3>Book Slot</h3>
+                <p>Pick your preferred time slot and confirm your booking instantly.</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-number">3</span>
+                <h3>Start Charging</h3>
+                <p>Arrive on time and enjoy a smooth, hassle-free charging experience.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<!-- ================= CTA ================= -->
+<section class="cta-section">
+    <div class="cta-container">
+        <h2>Ready to Power Your Drive?</h2>
+        <p>Join thousands of EV owners using EVPLUG for smarter charging.</p>
+
+        <a href="{% url 'station_list' %}" class="cta-btn">
+            Get Started
+        </a>
+    </div>
+</section>
+
+
+{% endblock %}

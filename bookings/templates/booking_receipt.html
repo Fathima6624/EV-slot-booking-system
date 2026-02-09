@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.receipt-wrapper {
+    padding: 120px 20px;
+    background: #f8fafc;
+}
+
+.receipt-card {
+    max-width: 650px;
+    margin: auto;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 36px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.1);
+}
+
+.receipt-title {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.receipt-sub {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 30px;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 12px 0;
+    font-size: 15px;
+}
+
+.receipt-row strong {
+    color: #0f172a;
+}
+
+.total {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px dashed #e5e7eb;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.print-btn {
+    margin-top: 30px;
+    background: #0f766e;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    border-radius: 12px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+}
+</style>
+
+<div class="receipt-wrapper">
+    <div class="receipt-card">
+
+        <div class="receipt-title">Charging Receipt</div>
+        <div class="receipt-sub">Receipt ID: #{{ booking.id }}</div>
+
+        <div class="receipt-row">
+            <span>User</span>
+            <strong>{{ booking.user.username }}</strong>
+        </div>
+
+        <div class="receipt-row">
+            <span>Station</span>
+            <strong>{{ booking.slot.charging_point.station.name }}</strong>
+        </div>
+
+        <div class="receipt-row">
+            <span>Charging Point</span>
+            <strong>CP-{{ booking.slot.charging_point.point_number }}</strong>
+        </div>
+
+        <div class="receipt-row">
+            <span>Date & Time</span>
+            <strong>
+                {{ booking.slot.start_at|date:"d M Y, h:i A" }} –
+                {{ booking.slot.end_at|date:"h:i A" }}
+            </strong>
+        </div>
+
+        <div class="receipt-row">
+            <span>Status</span>
+            <strong>{{ booking.status|title }}</strong>
+        </div>
+
+        <div class="receipt-row total">
+            <span>Total Amount</span>
+            <strong>₹150</strong>
+        </div>
+
+        <button class="print-btn" onclick="window.print()">
+            Download / Print Receipt
+        </button>
+
+    </div>
+</div>
+
+{% endblock %}

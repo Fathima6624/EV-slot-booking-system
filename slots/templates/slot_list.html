@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load tz %}
+{% block content %}
+
+<style>
+.station-page {
+    padding: 100px 40px;
+    background: #f8fafc;
+}
+
+.station-title {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 70px;
+    color: #0f172a;
+}
+
+/* Charging Point Card */
+.point-card {
+    background: white;
+    border-radius: 22px;
+    padding: 40px 30px 45px;
+    margin-bottom: 60px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.08);
+}
+
+/* Centered Header */
+.point-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.point-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f766e;
+    margin-bottom: 6px;
+}
+
+.point-meta {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+/* Slots */
+.slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+.slot-item {
+    background: #f9fafb;
+    border-radius: 16px;
+    padding: 22px 18px;
+    text-align: center;
+    transition: 0.25s ease;
+}
+
+.slot-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+}
+
+.slot-time {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 14px;
+}
+
+.book-slot-btn {
+    display: inline-block;
+    padding: 12px 26px;
+    background: linear-gradient(135deg, #0f766e, #14b8a6);
+    color: #ffffff;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.book-slot-btn:hover {
+    opacity: 0.95;
+}
+
+.slot-status {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.available { color: #047857; }
+.booked { color: #b91c1c; }
+.inactive { color: #64748b; }
+.expired { color: #9ca3af; }
+</style>
+
+<section class="station-page">
+
+    <h1 class="station-title">{{ station.name }}</h1>
+
+    {% for point in charging_points %}
+        <div class="point-card">
+
+            <!-- Charging Point Info -->
+            <div class="point-header">
+                <div class="point-name">
+                    Charging Point {{ point.point_number }}
+                </div>
+                <div class="point-meta">
+                    Connector: {{ point.connector_type|upper }} •
+                    Power: {{ point.power_kw }} kW
+                </div>
+            </div>
+
+            <!-- Slots -->
+            <div class="slots-grid">
+
+                {% for slot in point.slots.all %}
+                    <div class="slot-item">
+
+                        {% if slot.is_available %}
+                            <div class="slot-status available">Available</div>
+                        {% elif slot.is_booked %}
+                            <div class="slot-status booked">Booked</div>
+                        {% elif not slot.is_active %}
+                            <div class="slot-status inactive">Inactive</div>
+                        {% else %}
+                            <div class="slot-status expired">Expired</div>
+                        {% endif %}
+
+                        <div class="slot-time">
+                            {{ slot.start_at|localtime|date:"d M Y, h:i A" }}
+                            –
+                            {{ slot.end_at|localtime|time:"h:i A" }}
+                        </div>
+
+                        {% if slot.is_available %}
+                            <a href="{% url 'confirm_booking' slot.id %}" class="book-slot-btn">
+                                Book Slot
+                            </a>
+                        {% endif %}
+
+                    </div>
+                {% empty %}
+                    <p style="text-align:center;color:#9ca3af;">
+                        No slots available for this charging point
+                    </p>
+                {% endfor %}
+
+            </div>
+
+        </div>
+    {% endfor %}
+
+</section>
+
+{% endblock %}

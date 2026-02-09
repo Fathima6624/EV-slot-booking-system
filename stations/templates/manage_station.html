@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+.manage-wrapper {
+    padding: 120px 40px;
+    background: #f8fafc;
+    min-height: 100vh;
+}
+
+.manage-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.station-card {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+}
+
+.station-title {
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.station-meta {
+    color: #475569;
+    margin-top: 8px;
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 30px 0 20px;
+}
+
+.point-card {
+    background: white;
+    padding: 22px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: #0f766e;
+    color: white;
+}
+
+.btn-outline {
+    border: 1.5px solid #0f766e;
+    color: #0f766e;
+}
+</style>
+
+<section class="manage-wrapper">
+    <div class="manage-container">
+
+        <!-- STATION INFO -->
+        <div class="station-card">
+            <h1 class="station-title">
+                📍 {{ station.name }}
+            </h1>
+            <p class="station-meta">{{ station.location }}</p>
+            <p class="station-meta">{{ station.address }}</p>
+        </div>
+
+        <!-- CHARGING POINTS -->
+        <div class="section-title">
+            Charging Points
+        </div>
+
+        {% for point in charging_points %}
+            <div class="point-card">
+                <div>
+                    <strong>CP-{{ point.point_number }}</strong><br>
+                    {{ point.power_kw }} kW · {{ point.get_connector_type_display }}
+                </div>
+
+                <a href="{% url 'operator_slot_list' point.id %}"
+                   class="btn btn-outline">
+                   Manage Slots
+                </a>
+            </div>
+        {% empty %}
+            <p>No charging points added yet.</p>
+        {% endfor %}
+
+        <!-- ADD POINT -->
+        <a href="{% url 'add_charging_point' station.id %}"
+           class="btn btn-primary">
+           + Add Charging Point
+        </a>
+
+    </div>
+</section>
+{% endblock %}

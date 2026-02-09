@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+/* ===== OPERATOR STATIONS ===== */
+.stations-section {
+    padding: 120px 40px;
+    background: #f8fafc;
+    min-height: 100vh;
+}
+
+.stations-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.stations-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.stations-header h1 {
+    font-size: 34px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.add-station-btn {
+    background: #0f766e;
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.25s ease;
+}
+
+.add-station-btn:hover {
+    background: #115e59;
+}
+
+/* ===== STATION CARD ===== */
+.station-card {
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+.station-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #0f172a;
+}
+
+.station-location {
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 10px;
+}
+
+.station-address {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 18px;
+}
+
+/* ===== ACTIONS ===== */
+.station-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.manage-btn {
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1.5px solid #0f766e;
+    background: transparent;
+    color: #0f766e;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.manage-btn:hover {
+    background: #0f766e;
+    color: white;
+}
+
+.empty {
+    text-align: center;
+    color: #9ca3af;
+    margin-top: 40px;
+}
+</style>
+
+<section class="stations-section">
+    <div class="stations-container">
+
+        <!-- HEADER -->
+        <div class="stations-header">
+            <h1>My Stations</h1>
+            <a href="{% url 'add_station' %}" class="add-station-btn">
+                + Add Station
+            </a>
+        </div>
+
+        <!-- STATIONS LIST -->
+        {% for station in stations %}
+            <div class="station-card">
+                <div class="station-title">
+                    📍 {{ station.name }}
+                </div>
+
+                <div class="station-location">
+                    {{ station.location }}
+                </div>
+
+                {% if station.address %}
+                <div class="station-address">
+                    {{ station.address }}
+                </div>
+                {% endif %}
+
+                <div class="station-actions">
+                    <a href="{% url 'manage_station' station.id %}" class="manage-btn">
+                        Manage Station
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <p class="empty">No stations added yet.</p>
+        {% endfor %}
+
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.add-slot-wrapper {
+    padding: 120px 20px;
+    min-height: 100vh;
+    background: #f5f7fb;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.add-slot-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 480px;
+    padding: 32px;
+    border-radius: 18px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.12);
+}
+
+.add-slot-card h2 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #0f172a;
+}
+
+.add-slot-card p.subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 24px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #334155;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #0f766e;
+}
+
+.add-slot-card button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: #0f766e;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.add-slot-card button:hover {
+    background: #115e59;
+}
+
+.note {
+    margin-top: 14px;
+    font-size: 13px;
+    color: #64748b;
+    text-align: center;
+}
+</style>
+
+<div class="add-slot-wrapper">
+    <div class="add-slot-card">
+
+        <h2>Add Slot – CP-{{ point.point_number }}</h2>
+        <p class="subtitle">
+            {{ point.power_kw }} kW Charging Point
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- DATE -->
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" name="date" required>
+            </div>
+
+            <!-- START TIME -->
+            <div class="form-group">
+                <label>Start Time</label>
+                <input type="time" name="start_time" required>
+            </div>
+
+            <!-- END TIME -->
+            <div class="form-group">
+                <label>End Time</label>
+                <input type="time" name="end_time" required>
+            </div>
+
+            <button type="submit">Create Slot</button>
+        </form>
+
+        <div class="note">
+            ⏳ Slot will remain <strong>inactive</strong> until you activate it
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

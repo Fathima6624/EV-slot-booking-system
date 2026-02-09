@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+
+  {% block style %}
+
+    <!-- ================= PAGE STYLES ================= -->
+    <style>
+        /* ===== Station List Page ===== */
+
+        .stations-section {
+            padding: 120px 40px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .stations-container {
+            max-width: 1200px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .stations-title {
+            font-size: 42px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+
+        .stations-subtitle {
+            font-size: 18px;
+            color: #6b7280;
+            margin-bottom: 70px;
+        }
+
+        .stations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .station-card {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 36px 30px;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+            transition: all 0.35s ease;
+        }
+
+        .station-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+        }
+
+        .station-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .station-location {
+            font-size: 15px;
+            color: #6b7280;
+            margin-bottom: 26px;
+        }
+
+        .view-slots-btn {
+            display: inline-block;
+            padding: 12px 32px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+            color: #ffffff;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(15, 118, 110, 0.3);
+            transition: 0.3s ease;
+        }
+
+        .view-slots-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 35px rgba(15, 118, 110, 0.4);
+        }
+
+        .no-stations {
+            font-size: 16px;
+            color: #6b7280;
+        }
+    </style>
+    {% endblock %}
+
+
+
+{% block content %}
+
+
+
+<!-- ================= STATION LIST ================= -->
+<section class="stations-section">
+    <div class="stations-container">
+
+        <h1 class="stations-title">Charging Stations</h1>
+        <p class="stations-subtitle">
+            Select a charging station and book your preferred time slot.
+        </p>
+
+        <div class="stations-grid">
+
+            {% for station in stations %}
+                <div class="station-card">
+                    <h3>{{ station.name }}</h3>
+                    <p class="station-location">
+                        📍 {{ station.location }}
+                    </p>
+
+                    <a href="{% url 'station_slots' station.id %}" class="view-slots-btn">
+                        View Slots
+                    </a>
+                </div>
+            {% empty %}
+                <p class="no-stations">No charging stations available at the moment.</p>
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section>
+{% endblock %}

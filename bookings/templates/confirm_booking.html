@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load tz %}
+{% block content %}
+
+<style>
+.confirm-section {
+    min-height: 100vh;
+    background: #f8fafc;
+    padding: 120px 20px;
+}
+
+.confirm-card {
+    max-width: 520px;
+    margin: auto;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px 36px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.confirm-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.confirm-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #0f172a;
+}
+
+.confirm-subtitle {
+    font-size: 15px;
+    color: #6b7280;
+    margin-bottom: 30px;
+}
+
+.confirm-details {
+    text-align: left;
+    background: #f9fafb;
+    padding: 18px 20px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+}
+
+.confirm-details p {
+    margin: 8px 0;
+    font-size: 15px;
+}
+
+.confirm-details strong {
+    color: #0f172a;
+}
+
+.confirm-form input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 14px;
+    font-size: 14px;
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+.confirm-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.confirm-btn.primary {
+    background: linear-gradient(135deg, #0f766e, #14b8a6);
+    color: white;
+}
+
+.confirm-btn.primary:hover {
+    opacity: 0.95;
+}
+
+.confirm-btn.secondary {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.confirm-btn.secondary:hover {
+    background: #e5e7eb;
+}
+</style>
+
+<section class="confirm-section">
+    <div class="confirm-card">
+
+        <div class="confirm-icon">🔌</div>
+        <h1 class="confirm-title">Confirm Your Booking</h1>
+        <p class="confirm-subtitle">
+            Please review the details below before confirming your charging slot.
+        </p>
+
+        <div class="confirm-details">
+            <p>
+                <strong>Station:</strong>
+                {{ slot.charging_point.station.name }}
+            </p>
+
+            <p>
+                <strong>Charging Point:</strong>
+                CP-{{ slot.charging_point.point_number }}
+                ({{ slot.charging_point.connector_type|upper }} • {{ slot.charging_point.power_kw }} kW)
+            </p>
+
+            <p>
+                <strong>Date & Time:</strong><br>
+                {{ slot.start_at|localtime|date:"d M Y, h:i A" }}
+                –
+                {{ slot.end_at|localtime|time:"h:i A" }}
+            </p>
+        </div>
+
+        <form method="post" action="{% url 'book_slot' slot.id %}" class="confirm-form">
+            {% csrf_token %}
+
+            <input type="text" name="vehicle_number" placeholder="Vehicle Number (optional)">
+            <input type="tel" name="phone" placeholder="Phone Number (optional)">
+
+            <div class="confirm-actions">
+                <a href="{% url 'station_slots' slot.charging_point.station.id %}"
+                   class="confirm-btn secondary">
+                    Go Back
+                </a>
+
+                <button type="submit" class="confirm-btn primary">
+                    Confirm Booking
+                </button>
+            </div>
+        </form>
+
+    </div>
+</section>
+
+{% endblock %}
