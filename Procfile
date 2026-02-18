@@ -1,1 +1,1 @@
-web: gunicorn EV.wsgi
+web: python manage.py collectstatic --noinput && gunicorn EV.wsgi
